@@ -1,0 +1,23 @@
+services:
+  db:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: ffuser
+      POSTGRES_PASSWORD: ffpass
+      POSTGRES_DB: funfacts
+    volumes:
+      - pgdata:/var/lib/postgresql/data"
+    ports:
+      - "5432:5432"
+
+  api:
+    build: .
+    depends_on:
+      - db
+    environment:
+      DATABASE_URL: postgresql://ffuser:ffpass@db:5432/funfacts
+    ports:
+      - "8000:8000"
+
+volumes:
+  pgdata:
