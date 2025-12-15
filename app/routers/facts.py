@@ -15,6 +15,11 @@ def get_random_fact(db: Session = Depends(get_db)):
     db.commit()
     return fact
 
+@router.get("/popular", response_model=list[schemas.FactOut])
+def get_popular_facts(limit: int = 10, db: Session = Depends(get_db)):
+    return crud.get_popular_facts(db, limit)
+
+
 @router.post("/", response_model=schemas.FactOut)
 def create_fact(fact: schemas.FactCreate, key = Depends(require_key), db: Session = Depends(get_db)):
     return crud.create_fact(db, fact)
